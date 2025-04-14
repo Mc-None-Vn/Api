@@ -1,1 +1,3 @@
 fastapi
+easy_pil
+io
