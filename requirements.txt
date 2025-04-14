@@ -1,3 +1,7 @@
+asyncio
 fastapi
-easy_pil
-io
+pydantic
+uvicorn
+requests
+easy-pil
+flask
