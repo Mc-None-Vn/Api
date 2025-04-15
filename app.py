@@ -21,6 +21,9 @@ async def root():
 
 @app.post("/img/")
 async def img(item: ImgRequest, key: str = Header(None)):
+    if IMGBB_KEY is None or Image_Key is None:
+      raise HTTPException(status_code=500, detail="Biến môi trường không được định nghĩa")
+    
     try:
         # Kiểm tra header bảo mật
         if key != Image_Key:
