@@ -5,8 +5,8 @@ import uuid
 import os
 
 router = APIRouter()
-IMGBB_KEY = os.environ.get("IMGBB_KEY")
-Image_Key = os.environ.get("Image_Key")
+IMGBB_KEY = "c16ec93af2dfad387e2f685867d4d338"
+Image_Key = "mcnonevnapikey"
 EXPIRATION = 60 * 60 * 24  # 1 ngày
 
 class ImgRequest(BaseModel):
