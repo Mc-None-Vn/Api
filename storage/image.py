@@ -12,28 +12,20 @@ EXPIRATION = 60 * 60 * 24  # 1 ngày
 class ImgRequest(BaseModel):
     image: str
 
-@app.get("/")
-async def root():
-    try:
-        return {"message": "Welcome to Mc Api"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
 @app.post("/img/")
 async def img(item: ImgRequest, key: str = Header(None)):
     if IMGBB_KEY is None or Image_Key is None:
-      raise HTTPException(status_code=500, detail="Biến môi trường không được định nghĩa")
-    
+        raise HTTPException(status_code=500, detail="Biến môi trường không được định nghĩa")
     try:
         # Kiểm tra header bảo mật
         if key != Image_Key:
             raise HTTPException(status_code=401, detail="Unauthorized")
-
-        # Tạo tên ngẫu nhiên cho hình ảnh
-        name = str(uuid.uuid4()) + ".png"
-
+        
         # Tải hình ảnh từ đường link
         image_data = requests.get(item.image).content
+
+        # Tạo tên ngẫu nhiên cho hình ảnh
+        name = str(uuid.uuid4())
 
         # Post dữ liệu qua API ImgBB
         response = requests.post(
@@ -49,7 +41,7 @@ async def img(item: ImgRequest, key: str = Header(None)):
         if response.status_code == 200:
             data = response.json()
             url = data["data"]["url"]
-            return {"image": image, "url": url}
+            return {"image": item.image, "url": url}
         else:
             raise HTTPException(status_code=400, detail="Lỗi khi tải hình ảnh")
     except Exception as e:
