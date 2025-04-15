@@ -14,7 +14,10 @@ class ImgRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Mc Api"}
+    try:
+        return {"message": "Welcome to Mc Api"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/img/")
 async def img(item: ImgRequest, key: str = Header(None)):
