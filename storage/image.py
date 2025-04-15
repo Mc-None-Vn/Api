@@ -35,7 +35,7 @@ async def img(item: ImgRequest, key: str = Header(None)):
         if response.status_code == 200:
             data = response.json()
             url = data["data"]["url"]
-            return {"image": item.image, "url": url}
+            return {"image": item.image, "url": url[:-3]".png"}
         else:
             raise HTTPException(status_code=400, detail="Lỗi khi tải hình ảnh")
     except Exception as e:
