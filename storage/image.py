@@ -17,8 +17,8 @@ async def img(item: ImgRequest, key: str = Header(None)):
     if IMGBB_KEY is None or Image_Key is None:
         raise HTTPException(status_code=500, detail="Biến môi trường không được định nghĩa")
     try:
-        if key != Image_Key:
-            raise HTTPException(status_code=401, detail="Unauthorized")
+#         if key != Image_Key:
+#             raise HTTPException(status_code=401, detail="Unauthorized")
 
         image_data = requests.get(item.image).content
         name = str(uuid.uuid4())
