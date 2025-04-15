@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter
 
-app = APIRouter()
+router = APIRouter()
 
-@app.get("/")
+@router.get("/")
 async def root():
     try:
         return {"message": "Welcome to Mc Api"}
