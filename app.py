@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-
 app = FastAPI()
 
 @app.get("/")
-def root():
-    return {"status": 200, "message": "Welcome to Mc Api"}
+async def root():
+  return {"status": 200, "message": "Welcome to Mc Api"}
+
