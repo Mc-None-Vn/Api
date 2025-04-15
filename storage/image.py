@@ -37,7 +37,7 @@ async def img(item: ImgRequest, key: str = Header(None)):
             url = data["data"]["url"]
             if not url.endswith(".png"):
                 filename, file_extension = os.path.splitext(url)
-                 url = filename + ".png"            
+                url = filename + ".png"            
             return {"image": item.image, "url": url}
         else:
             raise HTTPException(status_code=400, detail="Lỗi khi tải hình ảnh lên kho lưu trữ đám mây")
