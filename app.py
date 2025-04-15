@@ -4,10 +4,14 @@ import requests
 
 class imgbb(BaseModel):
   name: str
-  image: str
+  image: bytes
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+  return {"message": "Welcome to Mc Api"}
+
 @app.post("/img/")
 async def img(item: imgbb):
-  return ("message": {"name": item.name, "image": item.image})
+  return {"message": {"name": item.name, "image": item.image}}
