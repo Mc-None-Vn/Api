@@ -1,6 +1,6 @@
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import APIRouter, HTTPException, Header
 
-app = FastAPI()
+app = APIRouter()
 
 @app.get("/")
 async def root():
