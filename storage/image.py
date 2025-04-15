@@ -5,14 +5,14 @@ import uuid
 import os
 
 router = APIRouter()
-IMGBB_KEY = "c16ec93af2dfad387e2f685867d4d338"
-Image_Key = "mcnonevnapikey"
+IMGBB_KEY = os.environ.get("IMGBB_KEY")
+Image_Key = os.environ.get("Image_Key")
 EXPIRATION = 60 * 60 * 24  # 1 ngày
 
 class ImgRequest(BaseModel):
     image: str
 
-@router.post("/img/")
+@router.post("/image/")
 async def img(item: ImgRequest, key: str = Header(None)):
     if IMGBB_KEY is None or Image_Key is None:
         raise HTTPException(status_code=500, detail="Biến môi trường không được định nghĩa")
