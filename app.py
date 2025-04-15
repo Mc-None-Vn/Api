@@ -4,4 +4,4 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to the root route!"}
+    return {"status": 200, "message": "Welcome to Mc Api"}
