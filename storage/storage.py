@@ -2,12 +2,21 @@ from fastapi import APIRouter, Request
 from PIL import Image
 from io import BytesIO
 import requests
-from fastapi.responses import Response
+from fastapi.responses import Response, JSONResponse
+import uuid
+import os
 
 router = APIRouter()
 
-@router.post("/api/ttt")
-async def ttt(request: Request):
+# Thư mục lưu hình ảnh
+image_dir = "storage"
+
+# Tạo thư mục nếu nó không tồn tại
+if not os.path.exists(image_dir):
+    os.makedirs(image_dir)
+
+@router.post("/api/storage/")
+async def storage(request: Request):
     data = await request.json()
     background_url = data["background"]
     images = data["image"]
@@ -32,11 +41,11 @@ async def ttt(request: Request):
         # Ghép ảnh
         background_img.paste(image, (paste_x, paste_y))
 
-    # Lưu hình ảnh vào BytesIO
-    img_io = BytesIO()
-    background_img.save(img_io, 'PNG')
-    img_io.seek(0)
+    # Lưu hình ảnh vào thư mục
+    image_id = str(uuid.uuid4())
+    image_path = f"{image_dir}/{image_id}.png"
+    background_img.save(image_path)
 
-    # Trả về hình ảnh
-    return Response(img_io.read(), media_type="image/png")
-    
+    # Trả về link đến hình ảnh
+    image_url = f"/api/storage/{image_id}.png"
+    return JSONResponse(content={"image_url": image_url}, status_code=200)
