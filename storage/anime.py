@@ -24,7 +24,6 @@ async def anime(item: NekosRequest):
                         ex = 86400
                         imgbb_name = str(uuid.uuid4())
                         key = os.environ.get("IMGBB_KEY")
-                        image_data = requests.get(item.image).content
                         response = requests.post(
                             "https://api.imgbb.com/1/upload",
                             data={"key": key, "name": imgbb_name, "expiration": ex},
