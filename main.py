@@ -11,7 +11,7 @@ app = FastAPI(
     title=f"{data['title']}",
     description=f"{data['description']}",
     version=f"{data['version']}",
-    docs_url="/docs",
+    docs_url="/docs/",
 )
 
 API_Key = os.environ.get("API_Key")
