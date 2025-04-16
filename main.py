@@ -8,10 +8,10 @@ with open('./data.json') as d:
     data = json.load(d)
 
 app = FastAPI(
-    title={data['title']['docs']},
+    title={data['title']},
     description={data['description']},
     version={data['version']},
-    docs_url={data['url']['docs']},
+    docs_url="/docs/",
 )
 with open('no_key.json') as k: 
     exempt_routes = json.load(k)

@@ -1,13 +1,9 @@
 {
-  "title": {
-    "api": "Mc Api",
-    "docs": "Mc Docs",
-    "web": "Mc Website"
-  },
+  "title": "Mc Docs",
   "description": "Website under development",
   "url": {
-    "docs": "/docs/",
-    "base": "https://mc-none-vn.vercel.app"
+    "docs": "https://mc-none-vn.vercel.app/docs/",
+    "base": "https://mc-none-vn.vercel.app/"
   },
   "logo": "https://i.ibb.co/JnTM2Rt/GIF-20241229-203310-646.gif",
   "color": "#830000",

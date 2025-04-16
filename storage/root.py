@@ -14,10 +14,10 @@ async def root():
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta http-equiv="refresh" content="0; url={data['url']['base']}{data['url']['docs']}">
+            <meta http-equiv="refresh" content="0; url={data['url']['docs']}">
 
           	<!-- Hiển thị website -->
-          	<meta name="title" contentá{data['title']['web']}>
+          	<meta name="title" contentá{data['title']}>
           	<meta name="description" content={data['description']}>
           	<meta name="viewport" content="width=device-width, initial-scale=1">
 	          <meta name="theme-color" content={data['color']}>
@@ -27,7 +27,7 @@ async def root():
           	<meta property="og:type" content="website">
           	<meta property="og:site_name" content="Team Mc">
           	<meta property="og:url" content={data['url']['base']}>
-          	<meta property="og:title" content={data['title']['web']}>
+          	<meta property="og:title" content={data['title']}>
           	<meta property="og:description" content={data['description']}>
 
           	<!-- Css / Js -->
