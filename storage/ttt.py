@@ -84,4 +84,11 @@ async def tictactoe(request: Request):
                 draw.line([(100, 50), (400, 50)], fill=(0, 0, 255), width=10)
             elif condition == [4, 5, 6]:
                 draw.line([(100, 200), (400, 200)], fill=(0, 0, 255), width=10)
-                
+
+    # Lưu hình ảnh vào BytesIO
+    img_io = BytesIO()
+    img.save(img_io, 'PNG')
+    img_io.seek(0)
+
+    # Trả về hình ảnh
+    return Response(img_io.read(), media_type="image/png")
