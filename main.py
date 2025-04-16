@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 import json
 
-with open('./data.json') as d:
+with open("./data.json") as d:
     data = json.load(d)
 
 app = FastAPI(
@@ -14,18 +14,20 @@ app = FastAPI(
     docs_url="/docs/",
 )
 
+
 @app.middleware("http")
 async def check_header(request: Request, call_next):
-    with open('no_key.json') as f:
+    with open("no_key.json") as f:
         exempt_request = json.load(f)
-        
-    if request.url.path.rstrip('/') in exempt_request:
+
+    if request.url.path.rstrip("/") in exempt_request:
         return await call_next(request)
     if "key" not in request.headers:
         return JSONResponse({"error": "Missing api key"}, status_code=401)
     if request.headers["key"] != str(os.environ.get("API_Key")):
         return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
+
 
 route_dir = os.path.join(os.path.dirname(__file__), "storage")
 for filename in os.listdir(route_dir):

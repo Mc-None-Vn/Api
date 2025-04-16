@@ -16,12 +16,7 @@ def parse_time(time_str):
     pattern = r"(\d+)([dDhHmMsS])"
     matches = re.findall(pattern, time_str, re.IGNORECASE)
     seconds = 0
-    units = {
-        's': 1,
-        'm': 60,
-        'h': 3600,
-        'd': 86400
-    }
+    units = {"s": 1, "m": 60, "h": 3600, "d": 86400}
     for value, unit in matches:
         unit = unit.lower()
         if unit in units:
@@ -39,12 +34,8 @@ async def img(item: ImgRequest):
         image_data = requests.get(item.image).content
         response = requests.post(
             "https://api.imgbb.com/1/upload",
-            data={
-                "key": key,
-                "name": name,
-                "expiration": ex
-            },
-            files={"image": image_data}
+            data={"key": key, "name": name, "expiration": ex},
+            files={"image": image_data},
         )
         if response.status_code == 200:
             data = response.json()
@@ -52,8 +43,8 @@ async def img(item: ImgRequest):
             if not url.endswith(".png"):
                 filename, file_extension = os.path.splitext(url)
                 url = filename + ".png"
-            return JSONResponse({"image": item.image, "url": url}, status_code=200)
+            return JSONResponse(url, status_code=200)
         else:
-            return JSONResponse({"error": "Error uploading image to cloud storage"}, status_code=400)
+            return JSONResponse({"error": "Error uploading image to ImgBB"}, status_code=400)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=400)
