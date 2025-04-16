@@ -2,6 +2,7 @@ import os
 import importlib
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 import json
 
 with open('./data.json') as d:
@@ -36,7 +37,5 @@ for filename in os.listdir(route_dir):
         module = importlib.import_module(f"storage.{module_name}")
         if hasattr(module, "router"):
             app.include_router(module.router)
-
-from fastapi.staticfiles import StaticFiles
 
 app.mount("/api/storage", StaticFiles(directory="./storage/storage"), name="image")
