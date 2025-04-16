@@ -17,7 +17,7 @@ async def root():
             <meta http-equiv="refresh" content="0; url={data['url']['docs']}">
 
           	<!-- Hiển thị website -->
-          	<meta name="title" contentá{data['title']}>
+          	<meta name="title" content={data['title']}>
           	<meta name="description" content={data['description']}>
           	<meta name="viewport" content="width=device-width, initial-scale=1">
 	          <meta name="theme-color" content={data['color']}>
