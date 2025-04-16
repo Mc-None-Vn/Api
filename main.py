@@ -3,13 +3,10 @@ import importlib
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 import json
-from dotenv import load_dotenv
 
 with open("./data.json") as d:
     data = json.load(d)
 
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
 app = FastAPI(
     title=f"{data['title']}",
     description=f"{data['description']}",
@@ -26,7 +23,7 @@ async def check_header(request: Request, call_next):
         return await call_next(request)
     if "key" not in request.headers:
         return JSONResponse({"error": "Missing api key"}, status_code=401)
-    if request.headers["key"] != str(API_KEY):
+    if request.headers["key"] != str(os.environ.get("API_KEY")):
         return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
 
