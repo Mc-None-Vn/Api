@@ -1,13 +1,20 @@
 import os
 import importlib
-import json
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
+import json
 
-app = FastAPI()
+with open('./data.json') as d:
+    data = json.load(d)
 
-with open('no_key.json') as f:
-    exempt_routes = json.load(f)
+app = FastAPI(
+    title={data['title']['docs']},
+    description={data['description']},
+    version={data['version']},
+    docs_url={data['url']['docs']},
+)
+with open('no_key.json') as k: 
+    exempt_routes = json.load(k)
 
 API_Key = os.environ.get("API_Key")
 
