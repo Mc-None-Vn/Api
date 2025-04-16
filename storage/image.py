@@ -12,7 +12,7 @@ EXPIRATION = 60 * 60 * 24
 class ImgRequest(BaseModel):
     image: str
 
-@router.post("/image/")
+@router.post("/api/image/")
 async def img(item: ImgRequest):
     try:
         image_data = requests.get(item.image).content
