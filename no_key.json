@@ -2,5 +2,6 @@
   "/openapi.json",
   "/docs",
   "/api",
-  "/"
+  "/",
+  ""
 ]
