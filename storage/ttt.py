@@ -6,8 +6,8 @@ from fastapi.responses import Response
 
 router = APIRouter()
 
-@router.post("/merge_images/")
-async def merge_images(request: Request):
+@router.post("/api/ttt")
+async def ttt(request: Request):
     data = await request.json()
     background_url = data["background"]
     images = data["image"]
