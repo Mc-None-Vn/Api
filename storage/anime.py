@@ -21,12 +21,12 @@ async def anime(item: NekosRequest):
                     image_response = requests.get(image_url)
                     if image_response.status_code == 200:
                         ex = 86400
-                        name = str(uuid.uuid4())
+                        imgbb_name = str(uuid.uuid4())
                         key = os.environ.get("IMGBB_KEY")
                         image_data = requests.get(item.image).content
                         response = requests.post(
                             "https://api.imgbb.com/1/upload",
-                            data={"key": key, "name": name, "expiration": ex},
+                            data={"key": key, "name": imgbb_name, "expiration": ex},
                             files={"image": image_response.content},
                         )
                         if response_imgbb.status_code == 200:
