@@ -2,8 +2,9 @@
   "title": "Mc Docs",
   "description": "Website under development",
   "url": {
-    "docs": "https://mc-none-vn.vercel.app/docs/",
-    "base": "https://mc-none-vn.vercel.app/"
+    "api": "https://mc-none-vn.vercel.app/api",
+    "docs": "https://mc-none-vn.vercel.app/docs",
+    "base": "https://mc-none-vn.vercel.app"
   },
   "logo": "https://i.ibb.co/JnTM2Rt/GIF-20241229-203310-646.gif",
   "color": "#830000",

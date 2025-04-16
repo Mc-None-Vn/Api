@@ -1,5 +1,6 @@
 [
-  "/",
-  "/api/",
-  "/docs"
+  "/openapi.json",
+  "/docs",
+  "/api",
+  "/"
 ]

@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-@router.get("/api/")
+@router.get("/api")
 async def api():
     try:
         return JSONResponse({"message": "Welcome to Mc Api"}, status_code=200)
