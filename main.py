@@ -8,9 +8,9 @@ with open('./data.json') as d:
     data = json.load(d)
 
 app = FastAPI(
-    title=data['title'],
-    description=data['description'],
-    version=data['version'],
+    title=f"{data['title']}",
+    description=f"{data['description']}",
+    version=f"{data['version']}",
     docs_url="/docs/",
 )
 with open('no_key.json') as k: 
