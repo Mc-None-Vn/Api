@@ -3,3 +3,4 @@ pydantic
 uvicorn
 requests
 pillow
+python-dotenv
