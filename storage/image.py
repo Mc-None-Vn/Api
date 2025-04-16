@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Header
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import requests
 import uuid
@@ -6,20 +7,14 @@ import os
 
 router = APIRouter()
 IMGBB_KEY = os.environ.get("IMGBB_KEY")
-Image_Key = os.environ.get("Image_Key")
 EXPIRATION = 60 * 60 * 24  # 1 ngày
 
 class ImgRequest(BaseModel):
     image: str
 
 @router.post("/image/")
-async def img(item: ImgRequest, key: str = Header(None)):
-    if IMGBB_KEY is None or Image_Key is None:
-        raise HTTPException(status_code=500, detail="Biến môi trường không được định nghĩa")
+async def img(item: ImgRequest):
     try:
-#         if key != Image_Key:
-#             raise HTTPException(status_code=401, detail="Unauthorized")
-
         image_data = requests.get(item.image).content
         name = str(uuid.uuid4())
         response = requests.post(
@@ -38,8 +33,8 @@ async def img(item: ImgRequest, key: str = Header(None)):
             if not url.endswith(".png"):
                 filename, file_extension = os.path.splitext(url)
                 url = filename + ".png"            
-            return {"image": item.image, "url": url}
+            return JSONResponse({"image": item.image, "url": url}, status_code=200)
         else:
-            raise HTTPException(status_code=400, detail="Lỗi khi tải hình ảnh lên kho lưu trữ đám mây")
+            return JSONResponse({"error": "Lỗi khi tải hình ảnh lên kho lưu trữ đám mây"}, status_code=400)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return JSONResponse({"error": str(e)}, status_code=400)

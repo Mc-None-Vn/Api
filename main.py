@@ -1,11 +1,27 @@
 import os
 import importlib
-from fastapi import FastAPI
+import json
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-route_dir = os.path.join(os.path.dirname(__file__), "storage")
+with open('no_key.json') as f:
+    exempt_routes = json.load(f)
 
+API_Key = os.environ.get("API_Key")
+
+@app.middleware("http")
+async def check_header(request: Request, call_next):
+    if request.url.path in exempt_routes:
+        return await call_next(request)
+    if "key" not in request.headers:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+    if request.headers["key"] != API_Key:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+    return await call_next(request)
+
+route_dir = os.path.join(os.path.dirname(__file__), "storage")
 for filename in os.listdir(route_dir):
     if filename.endswith(".py") and filename != "__init__.py":
         module_name = filename[:-3]

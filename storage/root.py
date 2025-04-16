@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
@@ -7,4 +8,4 @@ async def root():
     try:
         return {"message": "Welcome to Mc Api"}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return JSONResponse({"error": e}, status_code=500)
