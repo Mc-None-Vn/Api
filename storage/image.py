@@ -43,7 +43,7 @@ async def img(item: ImgRequest):
             if not url.endswith(".png"):
                 filename, file_extension = os.path.splitext(url)
                 url = filename + ".png"
-            return JSONResponse(content=url, status_code=200, media_type="text/plain")
+            return JSONResponse({"url": url}, status_code=200)
         else:
             return JSONResponse({"error": "Error uploading image to ImgBB"}, status_code=400)
     except Exception as e:
