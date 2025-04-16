@@ -23,7 +23,7 @@ async def check_header(request: Request, call_next):
         return await call_next(request)
     if "key" not in request.headers:
         return JSONResponse({"error": "Missing api key"}, status_code=401)
-    if request.headers["key"] != str(os.environ.get("API_KEY")):
+    if request.headers["key"] != str(os.environ.get("API_Key")):
         return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
 
