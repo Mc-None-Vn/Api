@@ -6,23 +6,22 @@ import uuid
 import os
 
 router = APIRouter()
-IMGBB_KEY = os.environ.get("IMGBB_KEY")
-EXPIRATION = 60 * 60 * 24
-
 class ImgRequest(BaseModel):
     image: str
 
 @router.post("/api/image")
 async def img(item: ImgRequest):
     try:
-        image_data = requests.get(item.image).content
+        ex = 60 * 60 * 24
         name = str(uuid.uuid4())
+        key = os.environ.get("IMGBB_KEY")
+        image_data = requests.get(item.image).content
         response = requests.post(
             "https://api.imgbb.com/1/upload",
             data={
-                "key": IMGBB_KEY,
+                "key": key,
                 "name": name,
-                "expiration": EXPIRATION
+                "expiration": ex
             },
             files={"image": image_data}
         )

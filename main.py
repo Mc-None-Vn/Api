@@ -2,7 +2,6 @@ import os
 import importlib
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 import json
 
 with open('./data.json') as d:
@@ -15,8 +14,6 @@ app = FastAPI(
     docs_url="/docs/",
 )
 
-API_Key = os.environ.get("API_Key")
-
 @app.middleware("http")
 async def check_header(request: Request, call_next):
     with open('no_key.json') as f:
@@ -26,7 +23,7 @@ async def check_header(request: Request, call_next):
         return await call_next(request)
     if "key" not in request.headers:
         return JSONResponse({"error": "Missing api key"}, status_code=401)
-    if request.headers["key"] != str(API_Key):
+    if request.headers["key"] != str(os.environ.get("API_Key")):
         return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
 
@@ -37,5 +34,3 @@ for filename in os.listdir(route_dir):
         module = importlib.import_module(f"storage.{module_name}")
         if hasattr(module, "router"):
             app.include_router(module.router)
-
-app.mount("/api/storage", StaticFiles(directory="./storage/storage"), name="image")

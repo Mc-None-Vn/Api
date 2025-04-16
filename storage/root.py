@@ -2,13 +2,12 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse, HTMLResponse
 import json
 
-with open('./data.json') as f:
-    data = json.load(f)
-    
 router = APIRouter()
 
 @router.get("/")
 async def root():
+    with open('./data.json') as f:
+        data = json.load(f)
     html = f"""
     <html>
         <head>
