@@ -7,7 +7,7 @@ import os
 
 router = APIRouter()
 IMGBB_KEY = os.environ.get("IMGBB_KEY")
-EXPIRATION = 60 * 60 * 24  # 1 ngày
+EXPIRATION = 60 * 60 * 24
 
 class ImgRequest(BaseModel):
     image: str
@@ -35,6 +35,6 @@ async def img(item: ImgRequest):
                 url = filename + ".png"            
             return JSONResponse({"image": item.image, "url": url}, status_code=200)
         else:
-            return JSONResponse({"error": "Lỗi khi tải hình ảnh lên kho lưu trữ đám mây"}, status_code=400)
+            return JSONResponse({"error": "Error uploading image to cloud storage"}, status_code=400)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=400)

@@ -16,9 +16,9 @@ async def check_header(request: Request, call_next):
     if request.url.path in exempt_routes:
         return await call_next(request)
     if "key" not in request.headers:
-        return JSONResponse({"error": "Unauthorized"}, status_code=401)
-    if request.headers["key"] != API_Key:
-        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+        return JSONResponse({"error": "Missing api key"}, status_code=401)
+    if request.headers["key"] != str(API_Key):
+        return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
 
 route_dir = os.path.join(os.path.dirname(__file__), "storage")
