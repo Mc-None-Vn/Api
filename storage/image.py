@@ -5,7 +5,10 @@ import requests
 import uuid
 import os
 import re
+from dotenv import load_dotenv
 
+load_dotenv()
+IMGBB_KEY = os.getenv("IMGBB_KEY")
 router = APIRouter()
 
 class ImgRequest(BaseModel):
@@ -30,7 +33,7 @@ async def img(item: ImgRequest):
     try:
         ex = parse_time(item.time)
         name = str(uuid.uuid4())
-        key = os.environ.get("IMGBB_KEY")
+        key = IMGBB_KEY
         image_data = requests.get(item.image).content
         response = requests.post(
             "https://api.imgbb.com/1/upload",
