@@ -32,7 +32,7 @@ async def anime(item: NekosRequest):
                         if response_imgbb.status_code == 200:
                             data_imgbb = response_imgbb.json()
                             url = data_imgbb["data"]["url"]
-                            return JSONResponse(url, status_code=200)
+                            return JSONResponse(content=url, status_code=200, media_type="text/plain")
                         else:
                             return JSONResponse({"error": "Error uploading image to ImgBB"}, status_code=400)
                     else:
