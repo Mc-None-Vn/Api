@@ -13,14 +13,15 @@ app = FastAPI(
     version=f"{data['version']}",
     docs_url="/docs",
 )
-with open('no_key.json') as k: 
-    exempt_routes = json.load(k)
 
 API_Key = os.environ.get("API_Key")
 
 @app.middleware("http")
 async def check_header(request: Request, call_next):
-    if request.url.path in exempt_routes:
+    with open('no_key.json') as f:
+        exempt_request = json.load(f)
+        
+    if request.url.path.rstrip('/') in exempt_request:
         return await call_next(request)
     if "key" not in request.headers:
         return JSONResponse({"error": "Missing api key"}, status_code=401)
