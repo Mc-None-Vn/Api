@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 import json
 
-with open("./data.json") as d:
+with open("./storage/data.json") as d:
     data = json.load(d)
 
 app = FastAPI(
@@ -16,7 +16,7 @@ app = FastAPI(
 
 @app.middleware("http")
 async def check_header(request: Request, call_next):
-    with open("no_key.json") as f:
+    with open("./storage/no_key.json") as f:
         exempt_request = json.load(f)
 
     if request.url.path.rstrip("/") in exempt_request:
@@ -27,10 +27,10 @@ async def check_header(request: Request, call_next):
         return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
 
-route_dir = os.path.join(os.path.dirname(__file__), "storage")
+route_dir = os.path.join(os.path.dirname(__file__), "api")
 for filename in os.listdir(route_dir):
     if filename.endswith(".py") and filename != "__init__.py":
         module_name = filename[:-3]
-        module = importlib.import_module(f"storage.{module_name}")
+        module = importlib.import_module(f"api.{module_name}")
         if hasattr(module, "router"):
             app.include_router(module.router)
