@@ -38,6 +38,13 @@ async def check_header(request: Request, call_next):
     return await call_next(request)
 
 route_dir = os.path.join(os.path.dirname(__file__), FOLDER)
+for filename in os.listdir(route_dir):
+    if filename.endswith(".py") and filename != "__init__.py":
+        module_name = filename[:-3]
+        module = importlib.import_module(f"{FOLDER}.{module_name}")
+        if hasattr(module, "router"):
+            app.include_router(module.router, prefix=f"/{FOLDER}")
+
 for subfolder in os.listdir(route_dir):
     subfolder_path = os.path.join(route_dir, subfolder)
     if os.path.isdir(subfolder_path):
@@ -47,3 +54,4 @@ for subfolder in os.listdir(route_dir):
                 module = importlib.import_module(f"{FOLDER}.{subfolder}.{module_name}")
                 if hasattr(module, "router"):
                     app.include_router(module.router, prefix=f"/{FOLDER}/{subfolder}")
+                    
