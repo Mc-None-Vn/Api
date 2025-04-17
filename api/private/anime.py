@@ -10,7 +10,7 @@ router = APIRouter()
 class NekosRequest(BaseModel):
     name: str
 
-@router.post("/api/anime")
+@router.post("/anime")
 async def anime(item: NekosRequest):
     try:
         while True:

@@ -43,7 +43,7 @@ for filename in os.listdir(route_dir):
         module_name = filename[:-3]
         module = importlib.import_module(f"{FOLDER}.{module_name}")
         if hasattr(module, "router"):
-            app.include_router(module.router, prefix=f"/{FOLDER}")
+            app.include_router(module.router)
 
 for subfolder in os.listdir(route_dir):
     subfolder_path = os.path.join(route_dir, subfolder)
@@ -53,5 +53,5 @@ for subfolder in os.listdir(route_dir):
                 module_name = filename[:-3]
                 module = importlib.import_module(f"{FOLDER}.{subfolder}.{module_name}")
                 if hasattr(module, "router"):
-                    app.include_router(module.router, prefix=f"/{FOLDER}/{subfolder}")
+                    app.include_router(module.router, prefix=f"/{FOLDER}")
                     

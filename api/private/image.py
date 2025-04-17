@@ -25,7 +25,7 @@ def parse_time(time_str):
             seconds = 86400
     return seconds
 
-@router.post("/api/image")
+@router.post("/image")
 async def img(item: ImgRequest):
     try:
         ex = parse_time(item.time)
