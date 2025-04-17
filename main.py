@@ -38,24 +38,28 @@ async def check_header(request: Request, call_next):
             return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
 
-def load_routers(directory, prefix=""):
-    for filename in os.listdir(directory):
-        filepath = os.path.join(directory, filename)
-        if os.path.isfile(filepath) and filename.endswith(".py") and filename != "__init__.py":
-            module_name = filename[:-3]
-            if prefix:
-                module = importlib.import_module(f"{prefix}.{module_name}")
-                if hasattr(module, "router"):
-                    app.include_router(module.router, prefix=f"/{prefix}")
-            else:
-                module = importlib.import_module(module_name)
-                if hasattr(module, "router"):
-                    app.include_router(module.router)
-        elif os.path.isdir(filepath):
-            if filename == FOLDER:
-                load_routers(filepath, prefix=filename)
-            else:
-                load_routers(filepath, prefix=f"{prefix}/{filename}" if prefix else filename)
-
 root_dir = os.path.dirname(__file__)
-load_routers(root_dir)
+for filename in os.listdir(root_dir):
+    filepath = os.path.join(root_dir, filename)
+    if os.path.isfile(filepath) and filename.endswith(".py") and filename != "__init__.py":
+        module_name = filename[:-3]
+        module = importlib.import_module(module_name)
+        if hasattr(module, "router"):
+            app.include_router(module.router)
+    elif os.path.isdir(filepath) and filename == FOLDER:
+        api_dir = filepath
+        for api_filename in os.listdir(api_dir):
+            api_filepath = os.path.join(api_dir, api_filename)
+            if os.path.isfile(api_filepath) and api_filename.endswith(".py") and api_filename != "__init__.py":
+                module_name = api_filename[:-3]
+                module = importlib.import_module(f"{FOLDER}.{module_name}")
+                if hasattr(module, "router"):
+                    app.include_router(module.router, prefix=f"/{FOLDER}")
+            elif os.path.isdir(api_filepath):
+                for sub_api_filename in os.listdir(api_filepath):
+                    if sub_api_filename.endswith(".py") and sub_api_filename != "__init__.py":
+                        module_name = sub_api_filename[:-3]
+                        module = importlib.import_module(f"{FOLDER}.{api_filename}.{module_name}")
+                        if hasattr(module, "router"):
+                            app.include_router(module.router, prefix=f"/{FOLDER}/{api_filename}")
+                            
