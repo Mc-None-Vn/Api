@@ -22,19 +22,23 @@ with open("./storage/no_key.json") as f:
 
 @app.middleware("http")
 async def check_header(request: Request, call_next):
+    if request.url.path.rstrip("/") in exempt_request:
+        return await call_next(request)
+
     path_parts = request.url.path.split("/")
     if len(path_parts) < 3 or path_parts[1] != FOLDER:
         return await call_next(request)
+
     api_type = path_parts[2]
     if api_type == NO_KEY:
         return await call_next(request)
+
     if api_type == NEED_KEY:
         if "key" not in request.headers:
             return JSONResponse({"error": "Missing api key"}, status_code=401)
         if request.headers["key"] != str(os.environ.get("API_Key")):
             return JSONResponse({"error": "Api key does not exist"}, status_code=401)
-    if request.url.path.rstrip("/") in exempt_request:
-        return await call_next(request)
+
     return await call_next(request)
 
 route_dir = os.path.join(os.path.dirname(__file__), FOLDER)
@@ -54,4 +58,3 @@ for subfolder in os.listdir(route_dir):
                 module = importlib.import_module(f"{FOLDER}.{subfolder}.{module_name}")
                 if hasattr(module, "router"):
                     app.include_router(module.router, prefix=f"/{FOLDER}")
-                    
