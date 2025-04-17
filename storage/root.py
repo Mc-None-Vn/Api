@@ -8,10 +8,10 @@ router = APIRouter()
 @router.get("/")
 async def root():
     try:
-        with open(os.path.join(os.path.dirname(__file__), "../storage/data.json")) as f:
+        with open(os.path.join(os.path.dirname(__file__), "./data.json")) as f:
             data = json.load(f)
         if 'url' not in data:
             raise HTTPException(status_code=500, detail="URL not found in data.json")
-        return RedirectResponse(url=f"{data['url']}/docs")
+        return RedirectResponse(url=f"{data['url']}/website/docs")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
