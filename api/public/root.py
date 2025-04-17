@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.get("/")
 async def root():
-    with open("../storage/data.json") as f:
+    with open("../../storage/data.json") as f:
         data = json.load(f)
     html = f"""
     <html>
