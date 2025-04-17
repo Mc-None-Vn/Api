@@ -12,6 +12,6 @@ async def root():
             data = json.load(f)
         if 'url' not in data:
             raise HTTPException(status_code=500, detail="URL not found in data.json")
-        return RedirectResponse(url=f"{data['url']}/docs/")
+        return RedirectResponse(url=f"{data['url']}/docs")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
