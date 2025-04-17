@@ -22,8 +22,6 @@ with open("./storage/no_key.json") as f:
 
 @app.middleware("http")
 async def check_header(request: Request, call_next):
-    if request.url.path.rstrip("/") in exempt_request:
-        return await call_next(request)
     path_parts = request.url.path.split("/")
     if len(path_parts) < 3 or path_parts[1] != FOLDER:
         return await call_next(request)
@@ -35,6 +33,8 @@ async def check_header(request: Request, call_next):
             return JSONResponse({"error": "Missing api key"}, status_code=401)
         if request.headers["key"] != str(os.environ.get("API_Key")):
             return JSONResponse({"error": "Api key does not exist"}, status_code=401)
+    if request.url.path.rstrip("/") in exempt_request:
+        return await call_next(request)
     return await call_next(request)
 
 route_dir = os.path.join(os.path.dirname(__file__), FOLDER)
