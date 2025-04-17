@@ -39,8 +39,6 @@ async def check_header(request: Request, call_next):
         if request.headers["key"] != str(os.environ.get("API_Key")):
             return JSONResponse({"error": "Api key does not exist"}, status_code=401)
 
-    return await call_next(request)
-
 route_dir = os.path.join(os.path.dirname(__file__), FOLDER)
 for filename in os.listdir(route_dir):
     if filename.endswith(".py") and filename != "__init__.py":
