@@ -56,3 +56,4 @@ async def check(request: Request):
         return {"message": "API key hợp lệ"}
     else:
         raise HTTPException(status_code=401, detail="API key không hợp lệ hoặc đã hết hạn")
+
