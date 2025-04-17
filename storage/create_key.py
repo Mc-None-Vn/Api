@@ -1,37 +1,58 @@
 from fastapi import APIRouter, Request, HTTPException
+import secrets
 import json
 import os
-import uuid
+import datetime
 
 router = APIRouter()
-file_path = "./storage/data.json"
+file_path = "./storage/api_key.json"
 
-if not os.path.exists(file_path):
+def create_api_key(exp):
+    api_key = secrets.token_urlsafe(32)
+    api_keys = load_api_keys()
+    api_keys.append({
+        "api_key": api_key,
+        "exp": datetime.date.today().toordinal() + exp
+    })
+    save_api_keys(api_keys)
+    return api_key
+
+def load_api_keys():
+    try:
+        with open(file_path, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def save_api_keys(api_keys):
     with open(file_path, "w") as f:
-        json.dump([], f)
+        json.dump(api_keys, f)
+
+def check_api_key(api_key):
+    api_keys = load_api_keys()
+    for key in api_keys:
+        if key["api_key"] == api_key:
+            if key["exp"] < datetime.date.today().toordinal():
+                api_keys.remove(key)
+                save_api_keys(api_keys)
+                return False
+            else:
+                key["exp"] = datetime.date.today().toordinal() + 1
+                save_api_keys(api_keys)
+                return True
+    return False
 
 @router.post("/api/key")
-async def key(request: Request):
+async def create(request: Request):
     data = await request.json()
-    if "author" not in data:
-        raise HTTPException(status_code=400, detail="Thiếu trường author")
+    exp = data["exp"]
+    api_key = create_api_key(exp)
+    return {"key": api_key}
 
-    with open(file_path, "r") as f:
-        existing_data = json.load(f)
-
-    for item in existing_data:
-        if item["author"] == data["author"]:
-            raise HTTPException(status_code=400, detail="Author đã tồn tại")
-
-    api_key = str(uuid.uuid4())
-    new_data = {
-        "author": data["author"],
-        "api_key": api_key,
-        "block": False
-    }
-    existing_data.append(new_data)
-
-    with open(file_path, "w") as f:
-        json.dump(existing_data, f, indent=4)
-
-    return {"author": new_data["author"], "api_key": new_data["api_key"]}
+@rouyer.get("/api/key")
+async def check(request: Request):
+    api_key = request.headers.get("key")
+    if check_api_key(api_key):
+        return {"message": "API key hợp lệ"}
+    else:
+        raise HTTPException(status_code=401, detail="API key không hợp lệ hoặc đã hết hạn")
