@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException
 import json
 import os
-import secrets
+import uuid
 
 router = APIRouter()
 file_path = "./storage/data.json"
@@ -23,7 +23,7 @@ async def key(request: Request):
         if item["author"] == data["author"]:
             raise HTTPException(status_code=400, detail="Author đã tồn tại")
 
-    api_key = secrets.token_urlsafe(32)
+    api_key = str(uuid.uuid4())
     new_data = {
         "author": data["author"],
         "api_key": api_key,
