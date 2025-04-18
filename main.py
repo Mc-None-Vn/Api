@@ -65,7 +65,6 @@ async def check_header(request: Request, call_next):
         if request.headers["key"] != str(os.environ.get("API_Key")):
             return JSONResponse({"error": "Api key does not exist"}, status_code=401)
     return await call_next(request)
-    pass
 
 FOLDERS = ["api"]
 run_router(app, FOLDERS)
