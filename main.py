@@ -45,8 +45,11 @@ def run_router(folder):
                 module_name = filename[:-3]
                 module = importlib.import_module(f"{FOLDER}.{module_name}")
                 if hasattr(module, "router"):
-                    app.include_router(module.router)
-    
+                    try:
+                        app.include_router(module.router)
+                    except Exception as e:
+                        print(f"Lỗi khi include router2: {e}")
+
         for subfolder in os.listdir(route_dir):
             subfolder_path = os.path.join(route_dir, subfolder)
             if os.path.isdir(subfolder_path):
@@ -55,7 +58,10 @@ def run_router(folder):
                         module_name = filename[:-3]
                         module = importlib.import_module(f"{FOLDER}.{subfolder}.{module_name}")
                         if hasattr(module, "router"):
-                            app.include_router(module.router, prefix=f"/{FOLDER}/{subfolder}")
+                            try:
+                                app.include_router(module.router, prefix=f"/{FOLDER}/{subfolder}")
+                            except Exception as e:
+                                print(f"Lỗi khi include router2: {e}")
 
 FOLDERS = ["api"]
 run_router(FOLDERS)
