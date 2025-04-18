@@ -21,6 +21,10 @@ def generate_captcha_image(captcha_text):
     draw = ImageDraw.Draw(image)
     font = ImageFont.load_default()
     draw.text((50, 30), captcha_text, font=font, fill=(0, 0, 0))
+    for _ in range(100):
+        x = random.randint(0, width)
+        y = random.randint(0, height)
+        draw.point((x, y), fill=(0, 0, 0))
     return image
 
 def upload_image_to_imgbb(image):
