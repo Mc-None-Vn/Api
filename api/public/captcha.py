@@ -53,6 +53,6 @@ def create_captcha():
     return {"url": image_url, "code": captcha_text} 
 
 @router.get("/captcha")
-def get_captcha():
+async def captcha():
     captcha = create_captcha()
     return captcha

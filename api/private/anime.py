@@ -7,11 +7,11 @@ import os
 
 router = APIRouter()
 
-class NekosRequest(BaseModel):
+class Anime(BaseModel):
     name: str
 
 @router.post("/anime")
-async def anime(item: NekosRequest):
+async def anime(item: Anime):
     try:
         while True:
             response = requests.get(f"https://nekos.best/api/v2/{item.name}")

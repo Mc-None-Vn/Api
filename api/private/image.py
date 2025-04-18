@@ -8,7 +8,7 @@ import re
 
 router = APIRouter()
 
-class ImgRequest(BaseModel):
+class Image(BaseModel):
     image: str
     time: str = "1d"
 
@@ -26,7 +26,7 @@ def parse_time(time_str):
     return seconds
 
 @router.post("/image")
-async def img(item: ImgRequest):
+async def image(item: Image):
     try:
         ex = parse_time(item.time)
         name = str(uuid.uuid4())
