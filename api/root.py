@@ -15,3 +15,4 @@ async def root():
         return RedirectResponse(url=f"{data['url']}/website/docs")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+

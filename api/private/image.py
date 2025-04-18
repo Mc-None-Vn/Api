@@ -48,3 +48,4 @@ async def img(item: ImgRequest):
             return JSONResponse({"error": "Error uploading image to ImgBB"}, status_code=400)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=400)
+

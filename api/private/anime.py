@@ -43,3 +43,4 @@ async def anime(item: NekosRequest):
                 return JSONResponse({"error": "Error getting image from Nekos.best"}, status_code=400)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=400)
+
