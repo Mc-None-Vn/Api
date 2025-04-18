@@ -19,12 +19,19 @@ def generate_captcha_image(captcha_text):
     width, height = 200, 100
     image = Image.new('RGB', (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(image)
-    font = ImageFont.load_default()
-    draw.text((50, 30), captcha_text, font=font, fill=(0, 0, 0))
-    for _ in range(100):
+    fonts = [ImageFont.load_default(), ImageFont.truetype("arial.ttf", 20), ImageFont.truetype("times.ttf", 20)]
+    font = random.choice(fonts)
+    x = 50
+    y = 30
+    for char in captcha_text:
+        draw.text((x, y), char, font=font, fill=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        x += 20
+        y += random.randint(-5, 5)
+    for _ in range(500):
         x = random.randint(0, width)
         y = random.randint(0, height)
-        draw.point((x, y), fill=(0, 0, 0))
+        draw.point((x, y), fill=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    image = image.rotate(random.randint(-10, 10), expand=False)
     return image
 
 def upload_image_to_imgbb(image):
