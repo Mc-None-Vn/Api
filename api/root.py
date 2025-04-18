@@ -1,17 +1,12 @@
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 import json
 import os
 
 router = APIRouter()
+folder = Jinja2Templates(directory="../website")
 
-@router.get("/")
-async def root():
-    try:
-        with open(os.path.join(os.path.dirname(__file__), "../storage/data.json")) as f:
-            data = json.load(f)
-        if 'url' not in data:
-            raise HTTPException(status_code=500, detail="URL not found in data.json")
-        return RedirectResponse(url=f"{data['url']}/website/docs")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return folder.TemplateResponse("index.html", {"request": request})
