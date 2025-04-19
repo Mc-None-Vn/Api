@@ -11,4 +11,4 @@ templates = Jinja2Templates(directory="../website")
 async def read_root(request: Request):
     with open(os.path.join(os.path.dirname(__file__), "../storage/data.json")) as f:
         data = json.load(f)
-    return templates.TemplateResponse("home.html", {"request": request, "data": data})
+    return templates.TemplateResponse("index.html", {"request": request, "data": data})
